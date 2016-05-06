@@ -8,4 +8,7 @@ resolvers ++= Seq(
   "snapshots" at "http://oss.sonatype.org/content/repositories/snapshots",
   "releases" at "http://oss.sonatype.org/content/repositories/releases")
 
-libraryDependencies ++= Seq("org.specs2" %% "specs2" % "3.7" % "test")
+libraryDependencies ++= Seq(
+  "org.specs2" %% "specs2" % "3.7" % "test",
+  "org.scalatest" %% "scalatest" % "2.2.6" % "test"
+)
