@@ -1,4 +1,4 @@
-name := "sbt-introduction"
+name := "pbt-examples-using-scalacheck"
 
 version := "0.1.0"
 
