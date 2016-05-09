@@ -14,10 +14,16 @@ class FizzbuzzSpec extends Specification with ScalaCheck { def is = s2"""
     yield the identity of a number if not divisible by either 3 or 5                $notDivisibleByThreeOrFive
                                                                          """
 
-  def divisibleByThreeNotFive = prop ((n: Int) => (fizzbuzz(n) mustEqual "Fizz")).setGen(multiplesOfThreeButNotFive)
-  def divisibleByFiveNotThree = prop ((n: Int) => (fizzbuzz(n) mustEqual "Buzz")).setGen(multiplesOfFiveButNotThree)
-  def divisibleByFifteen = prop ((n: Int) => (fizzbuzz(n) mustEqual "FizzBuzz")).setGen(multiplesOfFifteen)
-  def notDivisibleByThreeOrFive = prop ((n: Int) => (fizzbuzz(n) mustEqual n.toString)).setGen(excludeMultiplesOfThreeOrFive)
+  def divisibleByThreeNotFive = prop ((n: Int) => (fizzbuzz(n) mustEqual "Fizz")).setGen(ofThree)
+  def divisibleByFiveNotThree = prop ((n: Int) => (fizzbuzz(n) mustEqual "Buzz")).setGen(ofFive)
+  def divisibleByFifteen = prop ((n: Int) => (fizzbuzz(n) mustEqual "FizzBuzz")).setGen(ofFifteen)
+  def notDivisibleByThreeOrFive = prop ((n: Int) => (fizzbuzz(n) mustEqual n.toString)).setGen(notMultiple)
+
+  val numberGen = Gen.choose(Int.MinValue / 15, Int.MaxValue / 15)
+  val ofThree = numberGen.suchThat(_ % 5 != 0).map(_ * 3)
+  val ofFive = numberGen.suchThat(_ % 3 != 0).map(_ * 5)
+  val ofFifteen = numberGen.map(_ * 15)
+  val notMultiple = numberGen.suchThat(_ % 3 != 0).suchThat(_ % 5 != 0)
 
   val multiplesOfThreeButNotFive = for (n <- Gen.choose(-1000, 1000) if n % 5 != 0) yield 3 * n
   val multiplesOfFiveButNotThree = for (n <- Gen.choose(-1000, 1000) if n % 3 != 0) yield 5 * n
